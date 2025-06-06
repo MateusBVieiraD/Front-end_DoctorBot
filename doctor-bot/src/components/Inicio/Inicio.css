@@ -1,0 +1,46 @@
+.container{
+    height: 85vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 50px;
+    align-items: center;
+    padding: 20px;
+}
+
+.imagem > img{
+    width: 200px;
+}
+
+.descricao{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.botao{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.botao > button{
+    padding: 15px 25px;
+    border-radius: 10px;
+    background-color: #F15152;
+    border: 1px #F15152 solid;
+    font-size: 1rem;
+    font-weight: bolder;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.botao > button:hover{
+    color: #F15152;
+    background-color: #e8e8e8;
+    transition: .4s;
+}

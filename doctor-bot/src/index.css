@@ -1,0 +1,20 @@
+@font-face {
+    font-family: 'Graphik';
+    src: url('C:\Users\Mateus\Desktop\projeto-doctorbot\doctor-bot\src\font\Graphik-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Graphik;
+}
+
+html{
+    scroll-behavior: smooth;
+    background-color: #e8e8e8;
+}
