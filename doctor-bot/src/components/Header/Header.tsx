@@ -13,7 +13,7 @@ function Header() {
             onClick={() => navigate("/")}
           >
             <img
-              src="src\\img\\pngtree-stethoscope-cartoon-medical-png-image_6663953.png"
+              src="\img\pngtree-stethoscope-cartoon-medical-png-image_6663953.png"
               alt="Logo DoctorBot"
             />
           </div>

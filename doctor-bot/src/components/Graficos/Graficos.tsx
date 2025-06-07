@@ -9,9 +9,9 @@ function Graficos() {
 
         <div className="img">
           <label>Matriz de confusão da IA:</label>
-          <img src="src\img\Figure_1.png" alt="" />
+          <img src="img\Figure_1.png" alt="" />
           <label>Comparação de classes reais e previstas:</label>
-          <img src="src\img\Figure_2.png" alt="" />
+          <img src="img\Figure_2.png" alt="" />
         </div>
       </div>
     </>
