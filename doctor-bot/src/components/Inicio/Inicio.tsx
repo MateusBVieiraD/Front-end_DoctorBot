@@ -1,6 +1,9 @@
 import './Inicio.css'
+import { useNavigate } from 'react-router-dom'
 
 function Inicio(){
+    const navigate = useNavigate()
+    
     return(
         <>
         <div className="container">
@@ -12,7 +15,7 @@ function Inicio(){
 Com uma resposta rápida e objetiva, ele oferece um apoio inicial à triagem de pacientes, ajudando profissionais da saúde e usuários comuns a identificar possíveis sinais de alerta.</h3>
             </div>
             <div className="botao">
-                <button>Consultar DoctorBot</button>
+                <button onClick={() => navigate('/avaliar')}>Consultar DoctorBot</button>
             </div>
         </div>
         </>

@@ -19,6 +19,7 @@
     justify-content: center;
     text-align: center;
     padding: 20px;
+    color: var(--black);
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
@@ -32,15 +33,16 @@
 .botao > button{
     padding: 15px 25px;
     border-radius: 10px;
-    background-color: #F15152;
-    border: 1px #F15152 solid;
+    background-color: var(--red);
+    border: 1px var(--red) solid;
+    color: var(--black);
     font-size: 1rem;
     font-weight: bolder;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .botao > button:hover{
-    color: #F15152;
-    background-color: #e8e8e8;
+    color: var(--red);
+    background-color: var(--white);
     transition: .4s;
 }

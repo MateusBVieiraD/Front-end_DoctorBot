@@ -7,6 +7,14 @@
 
 @import '@fortawesome/fontawesome-free/css/all.min.css';
 
+:root{
+    --white: #F3F3F4;
+    --red: #984447;
+    --green: #2A9D8F;
+    --grey: #404E4D;
+    --black: #101419; 
+}
+
 *{
     box-sizing: border-box;
     margin: 0;
@@ -16,5 +24,5 @@
 
 html{
     scroll-behavior: smooth;
-    background-color: #e8e8e8;
+    background-color: var(--white);
 }
