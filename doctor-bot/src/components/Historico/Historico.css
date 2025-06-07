@@ -1,0 +1,35 @@
+/* Estilos para o histórico de pesquisas */
+.historico-item {
+  background: var(--green);
+  margin: 10px 0;
+  padding: 15px;
+  border-radius: 10px;
+  list-style: none;
+  color: var(--black);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  font-size: 1.08rem;
+}
+.historico-label {
+  font-weight: 600;
+  color: var(--grey);
+}
+.historico-value {
+  font-weight: 500;
+}
+.historico-avaliacao {
+  color: var(--red);
+  font-weight: bold;
+  font-size: 1.08rem;
+  padding-left: 2px;
+}
+@media (max-width: 600px) {
+  .historico-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    font-size: 0.98rem;
+  }
+}

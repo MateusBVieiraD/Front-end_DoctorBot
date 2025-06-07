@@ -9,12 +9,13 @@ interface FormData {
   pressao: string;
 }
 
-interface ResultadoIA{
-    idade: string;
-    glicose: string;
-    imc: string;
-    pressao: string;
-    avalicao: string;
+interface ResultadoIA {
+  idade: string;
+  glicose: string;
+  imc: string;
+  pressao: string;
+  avalicao?: string;
+  avaliacao?: string;
 }
 
 function ChatBot() {
@@ -28,196 +29,208 @@ function ChatBot() {
 
   const [resultadoIA, setResultadoIA] = useState<ResultadoIA | null>(null);
   const [erros, setErros] = useState<Partial<FormData>>({});
+  const [historico, setHistorico] = useState<ResultadoIA[]>([]); // 🟩 ADIÇÃO
+  const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const validarCampos = () => {
-    const novosErros: Partial<FormData> = {};
-
-    if (!/^[A-Za-zÀ-ÿ\s]+$/.test(form.nome)) {
-      novosErros.nome = "Nome deve conter apenas letras.";
-    }
-
-    if (!/^\d+$/.test(form.idade)) {
-      novosErros.idade = "Idade deve ser um número inteiro.";
-    }
-
-    if (!/^\d+$/.test(form.glicose)) {
-      novosErros.glicose = "glicose deve ser um número inteiro.";
-    }
-
-    if (!/^\d+(\.\d+)?$/.test(form.imc)) {
-      novosErros.imc = "IMC deve ser um número decimal (ex: 23.5).";
-    }
-
-    if (!/^\d+$/.test(form.pressao)) {
-      novosErros.pressao = "Pressão deve ser um número inteiro.";
-    }
-
-    setErros(novosErros);
-    return Object.keys(novosErros).length;
-  };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-
-  if (validarCampos()) {
-    console.warn("Erros de validação", erros);
-    return;
-  }
-
-  try {
-    const queryParams = new URLSearchParams({
-      nome: form.nome,
-      idade: form.idade,
-      glicose: form.glicose,
-      imc: form.imc,
-      pressao: form.pressao,
-    }).toString();
-
-    const url = `https://7758-2804-14c-65c1-48de-00-1001.ngrok-free.app/avaliar?${queryParams}`;
-
-    console.log("URL de requisição:", url);
-
-    const response = await fetch(url, {
-      method: "GET",
-    });
-
-    const textoResposta = await response.text();
-    console.log("Resposta da API (texto):", textoResposta);
-
-    if (!response.ok) {
-      throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`);
-    }
-
+    e.preventDefault();
+    setLoading(true);
     try {
-      const resultado: ResultadoIA = JSON.parse(textoResposta);
-      setResultadoIA(resultado);
-    } catch (jsonError) {
-      console.error("Erro ao parsear JSON da resposta:", jsonError);
-    }
+      const queryParams = new URLSearchParams({
+        idade: form.idade,
+        glicose: form.glicose,
+        imc: form.imc,
+        pressao: form.pressao,
+      }).toString();
 
-  } catch (error) {
-    console.error("Erro ao chamar a API:", error);
-  }
-};
+      const url = `https://a7fd-2804-14c-65c1-48de-00-1001.ngrok-free.app/avaliar?${queryParams}`;
+
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "ngrok-skip-browser-warning": "true"
+        }
+      });
+
+      const textoResposta = await response.text();
+
+      if (!response.ok) {
+        throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`);
+      }
+
+      try {
+        const resultado: ResultadoIA = JSON.parse(textoResposta);
+        setResultadoIA(resultado);
+        setShowModal(true);
+        // Salva o histórico em cookie (session cookie)
+        let historicoAtual: any[] = [];
+        const historicoCookie = document.cookie.split('; ').find(row => row.startsWith('historico='));
+        if (historicoCookie) {
+          try {
+            historicoAtual = JSON.parse(decodeURIComponent(historicoCookie.split('=')[1]));
+          } catch {}
+        }
+        const novoHistorico = [...historicoAtual, { ...resultado, nome: form.nome }].slice(-10);
+        document.cookie = `historico=${encodeURIComponent(JSON.stringify(novoHistorico))}; path=/;`;
+        setHistorico(novoHistorico);
+      } catch (jsonError) {
+        console.error("Erro ao parsear JSON da resposta:", jsonError);
+      }
+
+    } catch (error) {
+      console.error("Erro ao chamar a API:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
       <div className="container">
         <form onSubmit={handleSubmit} className="formulario">
           <div className="input-label">
-            <label>Nome do Paciente:</label>
+            <label>Nome:</label>
             <input
               type="text"
               name="nome"
               value={form.nome}
               onChange={handleChange}
               pattern="[A-Za-zÀ-ÿ\s]+"
-              inputMode="text"
+              title="Apenas letras"
               required
-              onBeforeInput={(e) => {
-                if (!/^[A-Za-zÀ-ÿ\s]$/.test(e.data ?? "")) {
+              inputMode="text"
+              autoComplete="off"
+              onKeyPress={e => {
+                if (!/[A-Za-zÀ-ÿ\s]/.test(e.key)) {
                   e.preventDefault();
                 }
               }}
             />
             {erros.nome && <span className="erro">{erros.nome}</span>}
           </div>
-
           <div className="input-label">
             <label>Idade:</label>
             <input
-              type="text"
+              type="number"
               name="idade"
               value={form.idade}
               onChange={handleChange}
-              pattern="\d+"
-              inputMode="numeric"
+              min="0"
+              step="1"
               required
-              onBeforeInput={(e) => {
-                if (!/^\d$/.test(e.data ?? "")) {
-                  e.preventDefault();
-                }
-              }}
             />
             {erros.idade && <span className="erro">{erros.idade}</span>}
           </div>
           <div className="input-label">
             <label>Glicose:</label>
             <input
-              type="text"
+              type="number"
               name="glicose"
               value={form.glicose}
               onChange={handleChange}
-              pattern="\d+"
-              inputMode="numeric"
+              min="0"
+              step="1"
               required
-              onBeforeInput={(e) => {
-                if (!/^\d$/.test(e.data ?? "")) {
-                  e.preventDefault();
-                }
-              }}
             />
             {erros.glicose && <span className="erro">{erros.glicose}</span>}
           </div>
           <div className="input-label">
             <label>IMC:</label>
             <input
-              type="text"
+              type="number"
               name="imc"
               value={form.imc}
               onChange={handleChange}
-              pattern="\d+(\.\d+)?"
-              inputMode="decimal"
+              min="0"
+              step="0.01"
               required
-              onBeforeInput={(e) => {
-                if (!/^[\d.]$/.test(e.data ?? "")) {
-                  e.preventDefault();
-                }
-              }}
             />
             {erros.imc && <span className="erro">{erros.imc}</span>}
           </div>
           <div className="input-label">
-            <label>Pressão Sanguinea:</label>
+            <label>Pressão:</label>
             <input
-              type="text"
+              type="number"
               name="pressao"
               value={form.pressao}
               onChange={handleChange}
-              pattern="\d+"
-              inputMode="numeric"
+              min="0"
+              step="1"
               required
-              onBeforeInput={(e) => {
-                if (!/^\d$/.test(e.data ?? "")) {
-                  e.preventDefault();
-                }
-              }}
             />
             {erros.pressao && <span className="erro">{erros.pressao}</span>}
           </div>
-        <div className="btn-form">
-          <button type="submit">
-            Enviar Informações<i className="fa-solid fa-clipboard"></i>
-          </button>
-        </div>
+          <div className="btn-form">
+            <button type="submit">
+              Enviar Informações<i className="fa-solid fa-clipboard"></i>
+            </button>
+          </div>
         </form>
-        {resultadoIA && (
-        <div className="resultado">
-          <h2>Resultado da IA</h2>
-          <p><strong>Paciente:</strong> {form.nome}</p>
-          <p><strong>Idade:</strong> {resultadoIA.idade}</p>
-          <p><strong>Glicose:</strong> {resultadoIA.glicose}</p>
-          <p><strong>IMC:</strong> {resultadoIA.imc}</p>
-          <p><strong>Pressão Sanguinea:</strong> {resultadoIA.pressao}</p>
-          <p><strong>Avaliação:</strong> {resultadoIA.avalicao}</p>
-        </div>
-      )}
 
+        {resultadoIA && showModal && (
+          <div className="modal-overlay">
+            <div className="modal-resultado modal-resultado-animado">
+              <button className="modal-close" onClick={() => setShowModal(false)}>&times;</button>
+              <div className="modal-ia-icon">
+                <i className="fa-solid fa-robot"></i>
+              </div>
+              <h2 className="modal-title">Resultado da Avaliação</h2>
+              <div className="modal-content">
+                <div className="modal-row">
+                  <span className="modal-label">Paciente:</span>
+                  <span className="modal-value destaque">{form.nome}</span>
+                </div>
+                <div className="modal-row">
+                  <span className="modal-label">Idade:</span>
+                  <span className="modal-value">{resultadoIA.idade}</span>
+                </div>
+                <div className="modal-row">
+                  <span className="modal-label">Glicose:</span>
+                  <span className="modal-value">{resultadoIA.glicose}</span>
+                </div>
+                <div className="modal-row">
+                  <span className="modal-label">IMC:</span>
+                  <span className="modal-value">{resultadoIA.imc}</span>
+                </div>
+                <div className="modal-row">
+                  <span className="modal-label">Pressão:</span>
+                  <span className="modal-value">{resultadoIA.pressao}</span>
+                </div>
+                <div className="modal-row modal-avaliacao-animada">
+                  <span className="modal-label">Avaliação:</span>
+                  <span className="modal-value">{(resultadoIA.avalicao || resultadoIA.avaliacao || '-').replace(/^\d+\.\s*/, '').replace(/^['"]|['"]$/g, '')}</span>
+                </div>
+              </div>
+              <button className="modal-btn" onClick={() => setShowModal(false)}>Fechar</button>
+            </div>
+          </div>
+        )}
+        {loading && (
+          <div className="modal-overlay">
+            <div className="skeleton-modal">
+              <div className="skeleton-ia">
+                <div className="skeleton-ia-dot"></div>
+                <div className="skeleton-ia-dot"></div>
+                <div className="skeleton-ia-dot"></div>
+                <div className="skeleton-ia-dot"></div>
+              </div>
+              <div className="skeleton-bar"></div>
+              <div className="skeleton-bar short"></div>
+              <p style={{marginTop: 24, color: 'var(--black)', fontWeight: 'bold'}}>A IA está analisando seus dados...</p>
+            </div>
+          </div>
+        )}
+        {resultadoIA && !showModal && false && (
+          <div className="resultado">
+            {/* Removido: resultado embaixo do formulário, pois agora só modal */}
+          </div>
+        )}
       </div>
     </>
   );

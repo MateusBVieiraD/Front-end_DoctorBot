@@ -18,3 +18,12 @@
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
     color: var(--black);
 }
+
+.header button {
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.header button:hover {
+  background: var(--black, #222);
+  color: var(--red, #d7263d);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}

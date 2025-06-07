@@ -3,22 +3,27 @@ import Header from './components/Header/Header'
 import Inicio from './components/Inicio/Inicio'
 import ChatBot from './components/ChatBot/ChatBot'
 import Footer from './components/Footer/Footer'
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { Historico } from './components/Historico/Historico';
+import About from './components/About/About';
+
+
 
 function App() {
 
 
   return (
     <Router>
-      <Header/>
-        <Routes>
-          <Route path='/' element={<Inicio/>}/>
-          <Route path='/avaliar' element={<ChatBot/>}/>
-
-        </Routes>
-      <Footer/>
+      <Header />
+      <Routes>
+        <Route path='/' element={<Inicio />} />
+        <Route path='/avaliar' element={<ChatBot />} />
+        <Route path='/historico' element={<Historico />} /> 
+        <Route path='/sobre' element={<About />} />
+      </Routes>
+      <Footer />
     </Router>
-  )
+  ) 
 }
 
 export default App
