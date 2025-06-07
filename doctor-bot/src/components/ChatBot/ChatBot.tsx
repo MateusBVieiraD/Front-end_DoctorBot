@@ -49,7 +49,7 @@ function ChatBot() {
         pressao: form.pressao,
       }).toString();
 
-      const url = `https://a7fd-2804-14c-65c1-48de-00-1001.ngrok-free.app/avaliar?${queryParams}`;
+      const url = `https://2a88-2804-14c-65c1-48de-00-1001.ngrok-free.app/avaliar?${queryParams}`;
 
       const response = await fetch(url, {
         method: "GET",
@@ -69,7 +69,7 @@ function ChatBot() {
         setResultadoIA(resultado);
         setShowModal(true);
         // Salva o histórico em cookie (session cookie)
-        let historicoAtual: any[] = [];
+        let historicoAtual = [];
         const historicoCookie = document.cookie.split('; ').find(row => row.startsWith('historico='));
         if (historicoCookie) {
           try {
@@ -222,7 +222,7 @@ function ChatBot() {
               </div>
               <div className="skeleton-bar"></div>
               <div className="skeleton-bar short"></div>
-              <p style={{marginTop: 24, color: 'var(--black)', fontWeight: 'bold'}}>A IA está analisando seus dados...</p>
+              <p style={{marginTop: 24, color: 'var(--black)', fontWeight: 'bold'}}>A IA está analisando os dados do paciente...</p>
             </div>
           </div>
         )}

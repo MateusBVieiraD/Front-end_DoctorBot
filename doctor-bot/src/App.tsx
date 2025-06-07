@@ -6,6 +6,7 @@ import Footer from './components/Footer/Footer'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Historico } from './components/Historico/Historico';
 import About from './components/About/About';
+import Graficos from './components/Graficos/Graficos'
 
 
 
@@ -20,6 +21,7 @@ function App() {
         <Route path='/avaliar' element={<ChatBot />} />
         <Route path='/historico' element={<Historico />} /> 
         <Route path='/sobre' element={<About />} />
+        <Route path='/graficos' element={<Graficos />} />
       </Routes>
       <Footer />
     </Router>

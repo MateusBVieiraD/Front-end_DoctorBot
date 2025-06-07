@@ -3,10 +3,15 @@
     height: 10vh;
     background-color: var(--grey);
     display: flex;
-    justify-content: start;
+    justify-content: space-around;
     align-items: center;
     padding: 20px;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.logo-nome{
+  display: flex;
+  align-items: center;
 }
 
 .logo > img{
@@ -19,11 +24,26 @@
     color: var(--black);
 }
 
-.header button {
-  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+.header > .botao{
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  gap: 20px;
 }
-.header button:hover {
-  background: var(--black, #222);
-  color: var(--red, #d7263d);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+ 
+.header >.botao > button{
+    padding: 10px 20px;
+    border-radius: 10px;
+    background-color: var(--red);
+    border: 1px var(--red) solid;
+    color: var(--black);
+    font-size: .7rem;
+    font-weight: bolder;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.header > .botao > button:hover{
+    color: var(--red);
+    background-color: var(--white);
+    transition: .4s;
 }
