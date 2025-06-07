@@ -1,7 +1,0 @@
-streamlit==1.25.0
-llama-index==0.6.30
-ollama==0.1.9
-huggingface-hub==0.16.4
-transformers==4.31.0
-torch==2.0.1
-sentence-transformers==2.2.2
