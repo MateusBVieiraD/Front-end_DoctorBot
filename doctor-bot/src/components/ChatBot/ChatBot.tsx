@@ -28,8 +28,8 @@ function ChatBot() {
   });
 
   const [resultadoIA, setResultadoIA] = useState<ResultadoIA | null>(null);
-  const [erros, setErros] = useState<Partial<FormData>>({});
-  const [historico, setHistorico] = useState<ResultadoIA[]>([]); // 🟩 ADIÇÃO
+  const [erros] = useState<Partial<FormData>>({});
+  const [, setHistorico] = useState<ResultadoIA[]>([]); 
   const [erroModal, setErroModal] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -288,11 +288,7 @@ function ChatBot() {
           </div>
         )}
 
-        {resultadoIA && !showModal && false && (
-          <div className="resultado">
-            {/* Removido: resultado embaixo do formulário, pois agora só modal */}
-          </div>
-        )}
+  
       </div>
     </>
   );
