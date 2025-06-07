@@ -11,8 +11,6 @@ import Graficos from './components/Graficos/Graficos'
 
 
 function App() {
-
-
   return (
     <Router>
       <Header />

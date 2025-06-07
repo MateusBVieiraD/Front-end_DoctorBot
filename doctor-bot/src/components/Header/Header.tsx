@@ -24,7 +24,7 @@ function Header() {
         <div className="botao">
           <button onClick={() => navigate("/historico")}>Histórico</button>
           <button onClick={() => navigate("/sobre")}>Sobre</button>
-          <button onClick={() => navigate("/graficos")}>Graficos</button>
+          <button onClick={() => navigate("/graficos")}>Gráficos</button>
         </div>
       </header>
     </>

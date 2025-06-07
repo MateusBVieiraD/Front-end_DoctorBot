@@ -4,6 +4,7 @@ function Graficos() {
   return (
     <>
       <div className="container">
+        
         <h2>Gráficos de precisão da IA</h2>
 
         <div className="img">

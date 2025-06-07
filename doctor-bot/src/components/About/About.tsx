@@ -1,7 +1,13 @@
 import React from "react";
 import "./About.css";
+import { useNavigate } from "react-router-dom";
 
-const About = () => (
+
+function About (){
+  const navigate = useNavigate()
+
+  return(
+
   <div className="container">
     <div className="about-container">
       <h1>Sobre o DoctorBot</h1>
@@ -65,7 +71,11 @@ const About = () => (
         </p>
       </div>
     </div>
+    <div className="botao">
+                <button onClick={() => navigate('/avaliar')}>Consultar DoctorBot</button>
+            </div>
   </div>
 );
+}
 
 export default About;
