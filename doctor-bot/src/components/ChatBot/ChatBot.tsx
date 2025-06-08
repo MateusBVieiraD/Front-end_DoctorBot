@@ -29,8 +29,7 @@ function ChatBot() {
 
   const [resultadoIA, setResultadoIA] = useState<ResultadoIA | null>(null);
   const [erros] = useState<Partial<FormData>>({});
-  const [, setHistorico] = useState<ResultadoIA[]>([]); 
-  const [erroModal, setErroModal] = useState<string | null>(null);
+  const [, setHistorico] = useState<ResultadoIA[]>([]); // 🟩 ADIÇÃO
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
@@ -42,7 +41,6 @@ function ChatBot() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    setErroModal(null); // Limpa erro anterior
     try {
       const queryParams = new URLSearchParams({
         idade: form.idade,
@@ -51,21 +49,20 @@ function ChatBot() {
         pressao: form.pressao,
       }).toString();
 
-      const url = `https://9dc0-2804-14c--48de-00-1001.ngrok-free.app/avaliar?${queryParams}`;
+
+      const url = `https://6ceb-2804-14c-65c1-48de-00-1001.ngrok-free.app/avaliar?${queryParams}`;
 
       const response = await fetch(url, {
         method: "GET",
         headers: {
-          "ngrok-skip-browser-warning": "true",
-        },
+          "ngrok-skip-browser-warning": "true"
+        }
       });
 
       const textoResposta = await response.text();
 
       if (!response.ok) {
-        throw new Error(
-          `Erro na requisição: ${response.status} ${response.statusText}`
-        );
+        throw new Error(`Erro na requisição: ${response.status} ${response.statusText}`);
       }
 
       try {
@@ -73,31 +70,21 @@ function ChatBot() {
         setResultadoIA(resultado);
         setShowModal(true);
         // Salva o histórico em cookie (session cookie)
-        let historicoAtual = [];
-        const historicoCookie = document.cookie
-          .split("; ")
-          .find((row) => row.startsWith("historico="));
+        let historicoAtual: any[] = [];
+        const historicoCookie = document.cookie.split('; ').find(row => row.startsWith('historico='));
         if (historicoCookie) {
           try {
-            historicoAtual = JSON.parse(
-              decodeURIComponent(historicoCookie.split("=")[1])
-            );
+            historicoAtual = JSON.parse(decodeURIComponent(historicoCookie.split('=')[1]));
           } catch {}
         }
-        const novoHistorico = [
-          ...historicoAtual,
-          { ...resultado, nome: form.nome },
-        ].slice(-10);
-        document.cookie = `historico=${encodeURIComponent(
-          JSON.stringify(novoHistorico)
-        )}; path=/;`;
+        const novoHistorico = [...historicoAtual, { ...resultado, nome: form.nome }].slice(-10);
+        document.cookie = `historico=${encodeURIComponent(JSON.stringify(novoHistorico))}; path=/;`;
         setHistorico(novoHistorico);
       } catch (jsonError) {
-        setErroModal("Erro ao interpretar a resposta da IA. Tente novamente.");
         console.error("Erro ao parsear JSON da resposta:", jsonError);
       }
-    } catch (error: any) {
-      setErroModal(error.message || "Erro desconhecido ao chamar a API.");
+
+    } catch (error) {
       console.error("Erro ao chamar a API:", error);
     } finally {
       setLoading(false);
@@ -120,7 +107,7 @@ function ChatBot() {
               required
               inputMode="text"
               autoComplete="off"
-              onKeyPress={(e) => {
+              onKeyPress={e => {
                 if (!/[A-Za-zÀ-ÿ\s]/.test(e.key)) {
                   e.preventDefault();
                 }
@@ -168,7 +155,7 @@ function ChatBot() {
             {erros.imc && <span className="erro">{erros.imc}</span>}
           </div>
           <div className="input-label">
-            <label>Pressão Diastólica:</label>
+            <label>Pressão:</label>
             <input
               type="number"
               name="pressao"
@@ -190,12 +177,7 @@ function ChatBot() {
         {resultadoIA && showModal && (
           <div className="modal-overlay">
             <div className="modal-resultado modal-resultado-animado">
-              <button
-                className="modal-close"
-                onClick={() => setShowModal(false)}
-              >
-                &times;
-              </button>
+              <button className="modal-close" onClick={() => setShowModal(false)}>&times;</button>
               <div className="modal-ia-icon">
                 <i className="fa-solid fa-robot"></i>
               </div>
@@ -223,16 +205,10 @@ function ChatBot() {
                 </div>
                 <div className="modal-row modal-avaliacao-animada">
                   <span className="modal-label">Avaliação:</span>
-                  <span className="modal-value">
-                    {(resultadoIA.avalicao || resultadoIA.avaliacao || "-")
-                      .replace(/^\d+\.\s*/, "")
-                      .replace(/^['"]|['"]$/g, "")}
-                  </span>
+                  <span className="modal-value">{(resultadoIA.avalicao || resultadoIA.avaliacao || '-').replace(/^\d+\.\s*/, '').replace(/^['"]|['"]$/g, '')}</span>
                 </div>
               </div>
-              <button className="modal-btn" onClick={() => setShowModal(false)}>
-                Fechar
-              </button>
+              <button className="modal-btn" onClick={() => setShowModal(false)}>Fechar</button>
             </div>
           </div>
         )}
@@ -247,48 +223,10 @@ function ChatBot() {
               </div>
               <div className="skeleton-bar"></div>
               <div className="skeleton-bar short"></div>
-              <p
-                style={{
-                  marginTop: 24,
-                  color: "var(--black)",
-                  fontWeight: "bold",
-                }}
-              >
-                A IA está analisando os dados do paciente...
-              </p>
+              <p style={{marginTop: 24, color: 'var(--black)', fontWeight: 'bold'}}>A IA está analisando seus dados...</p>
             </div>
           </div>
         )}
-
-        {erroModal && (
-          <div className="modal-overlay">
-            <div className="modal-resultado modal-resultado-animado">
-              <button
-                className="modal-close"
-                onClick={() => setErroModal(null)}
-              >
-                &times;
-              </button>
-              <div className="modal-ia-icon">
-                <i
-                  className="fa-solid fa-triangle-exclamation"
-                  style={{ color: "#e74c3c" }}
-                ></i>
-              </div>
-              <h2 className="modal-title">Erro na Requisição</h2>
-              <div className="modal-content">
-                <p style={{ color: "#e74c3c", fontWeight: "bold" }}>
-                  Falha ao comunicar com a IA...
-                </p>
-              </div>
-              <button className="modal-btn" onClick={() => setErroModal(null)}>
-                Fechar
-              </button>
-            </div>
-          </div>
-        )}
-
-  
       </div>
     </>
   );
