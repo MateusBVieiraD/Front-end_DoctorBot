@@ -26,7 +26,7 @@ function About (){
           <b>
             National Institute of Diabetes and Digestive and Kidney Diseases
           </b>
-          , focado em mulheres adultas de origem Pima. O objetivo é prever, de
+          . O objetivo é prever, de
           forma diagnóstica, se uma paciente possui diabetes, a partir de
           medições como idade, glicose, IMC e pressão arterial.
         </p>
