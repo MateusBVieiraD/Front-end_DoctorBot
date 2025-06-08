@@ -51,7 +51,7 @@ function ChatBot() {
         pressao: form.pressao,
       }).toString();
 
-      const url = `https://9dc0-2804-14c-65c1-48de-00-1001.ngrok-free.app/avaliar?${queryParams}`;
+      const url = `https://003f-189-6-6-53.ngrok-free.app/avaliar?${queryParams}`;
 
       const response = await fetch(url, {
         method: "GET",
