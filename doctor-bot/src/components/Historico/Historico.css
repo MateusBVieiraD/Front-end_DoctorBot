@@ -25,6 +25,40 @@
   font-size: 1.08rem;
   padding-left: 2px;
 }
+.enviar-email-btn {
+  margin-left: 12px;
+  padding: 4px 14px;
+  border-radius: 6px;
+  background: var(--red, #d7263d);
+  color: var(--black, #222);
+  border: none;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.enviar-email-btn:hover {
+  background: var(--black, #222);
+  color: var(--red, #d7263d);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+.info-email-btn {
+  margin-left: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--gray, #eee);
+  color: var(--black, #222);
+  border: none;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.info-email-btn:hover {
+  background: var(--black, #222);
+  color: var(--red, #d7263d);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
 @media (max-width: 600px) {
   .historico-item {
     flex-direction: column;
@@ -32,4 +66,8 @@
     gap: 2px;
     font-size: 0.98rem;
   }
+}
+.modal-overlay {
+  /* já existe, só garantir z-index alto para modais */
+  z-index: 1000;
 }
