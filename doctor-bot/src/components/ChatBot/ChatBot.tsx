@@ -155,7 +155,7 @@ function ChatBot() {
             {erros.imc && <span className="erro">{erros.imc}</span>}
           </div>
           <div className="input-label">
-            <label>Pressão:</label>
+            <label>Pressão Diastólica:</label>
             <input
               type="number"
               name="pressao"
