@@ -159,7 +159,7 @@ export function Historico() {
                 };
                 try {
                   const resp = await fetch(
-                    "https://6ceb-2804-14c-65c1-48de-00-1001.ngrok-free.app/enviar-email",
+                    "https://e917-2804-14c-65c1-48de-00-1001.ngrok-free.app/enviar-email",
                     {
                       method: "POST",
                       headers: { "Content-Type": "application/json" },
